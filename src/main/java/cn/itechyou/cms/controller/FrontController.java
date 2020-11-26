@@ -459,7 +459,7 @@ public class FrontController {
 					"栏目不存在，请仔细检查[typeid]参数是否有误，核实后重试。");
 		}
 		
-		if(categoryWithBLOBs.getIsInput() != 0) {
+		if(categoryWithBLOBs.getIsInput() != 1) {
 			throw new FormParameterException(
 					ExceptionEnum.FORM_PARAMETER_EXCEPTION.getCode(),
 					ExceptionEnum.FORM_PARAMETER_EXCEPTION.getMessage(),
