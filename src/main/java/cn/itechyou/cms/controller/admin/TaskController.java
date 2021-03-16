@@ -25,9 +25,8 @@ import cn.itechyou.cms.utils.UUIDUtils;
 
 /**
  * 管理定时任务(需要做权限控制)
- *
- * @author yudong
- * @date 2019/5/10
+ * @author 王俊南
+ * @date 2021/3/16
  */
 @Controller
 @RequestMapping("admin/task")
@@ -42,6 +41,7 @@ public class TaskController {
      * 查看任务列表
      */
     @RequestMapping({"","/list"})
+    @RequiresPermissions("6b3i98zz")
     public String taskList(Model model, SearchEntity params) {
         PageInfo<Scheduled> page = scheduledService.queryListByPage(params);
 		model.addAttribute("pageInfo", page);
@@ -52,7 +52,7 @@ public class TaskController {
 	 * 添加跳转
 	 */
 	@RequestMapping("/toAdd")
-	@RequiresPermissions("8h9r1tin")
+	@RequiresPermissions("qucfo6dh")
 	public String toAdd(Model model) {
 		return "admin/task/add";
 	}
@@ -61,6 +61,7 @@ public class TaskController {
      * 编辑任务cron表达式
      */
     @RequestMapping("/add")
+    @RequiresPermissions("5752e68v")
     public String add(Scheduled scheduled) {
         if (!CronUtils.isValidExpression(scheduled.getCronExpression())) {
             throw new IllegalArgumentException("失败,非法表达式:" + scheduled.getCronExpression());
@@ -76,7 +77,7 @@ public class TaskController {
 	 * 编辑跳转
 	 */
 	@RequestMapping("/toEdit")
-	@RequiresPermissions("8h9r1tin")
+	@RequiresPermissions("6ru3g0r0")
 	public String toEdit(Model model,String id) {
 		Scheduled scheduled = scheduledService.queryScheduledById(id);
 		model.addAttribute("scheduled", scheduled);
@@ -84,9 +85,10 @@ public class TaskController {
 	}
     
     /**
-     * 编辑任务cron表达式
+     * 编辑任务
      */
     @RequestMapping("/update")
+    @RequiresPermissions("l81dwx0y")
     public String update(Scheduled scheduled) {
         if (!CronUtils.isValidExpression(scheduled.getCronExpression())) {
             throw new IllegalArgumentException("失败,非法表达式:" + scheduled.getCronExpression());
@@ -101,7 +103,7 @@ public class TaskController {
 	 * 删除
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	@RequiresPermissions("zr25t2e0")
+	@RequiresPermissions("s2j11527")
 	public String delete(Model model, String id) {
 		scheduledService.delete(id);
 		return "redirect:/admin/task/list";
@@ -111,6 +113,7 @@ public class TaskController {
      * 执行定时任务
      */
     @RequestMapping("/run")
+    @RequiresPermissions("4n23xrch")
     @ResponseBody
     public ResponseResult runTaskCron(String id) throws Exception {
     	Scheduled scheduled = scheduledService.queryScheduledById(id);
@@ -124,6 +127,7 @@ public class TaskController {
      * 启用或禁用定时任务
      */
     @RequestMapping("/changeStatus")
+    @RequiresPermissions("wu4ujb04")
     public String changeStatusTaskCron(String id, String status) {
     	Scheduled scheduled = new Scheduled();
     	scheduled.setId(id);
