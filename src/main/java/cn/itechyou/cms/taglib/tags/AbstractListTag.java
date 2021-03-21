@@ -63,9 +63,9 @@ public abstract class AbstractListTag {
 		
 		item = FunctionUtil.replaceByFunction(item, FieldEnum.FIELD_TITLE.getRegexp(), StringUtil.isBlank(archives.get("title")) ? "" : archives.get("title").toString());
 		item = item.replaceAll(FieldEnum.FIELD_PROPERTIES.getRegexp(), StringUtil.isBlank(archives.get("properties")) ? "" : archives.get("properties").toString());
-		item = item.replaceAll(FieldEnum.FIELD_LITPIC.getRegexp(), system.getWebsite() + system.getUploaddir() + "/" + imagePath);
+		item = item.replaceAll(FieldEnum.FIELD_LITPIC.getRegexp(), StringUtil.isBlank(imagePath) ? "" : system.getWebsite() + system.getUploaddir() + "/" + imagePath);
 		item = item.replaceAll(FieldEnum.FIELD_TAG.getRegexp(), StringUtil.isBlank(archives.get("tag")) ? "" : archives.get("tag").toString());
-		item = item.replaceAll(FieldEnum.FIELD_REMARK.getRegexp(), StringUtil.isBlank(archives.get("description")) ? "" : archives.get("description").toString());
+		item = FunctionUtil.replaceByFunction(item, FieldEnum.FIELD_REMARK.getRegexp(), StringUtil.isBlank(archives.get("description")) ? "" : archives.get("description").toString());
 		item = item.replaceAll(FieldEnum.FIELD_CATEGORYID.getRegexp(), StringUtil.isBlank(archives.get("categoryId")) ? "-1" : archives.get("categoryId").toString());
 		item = item.replaceAll(FieldEnum.FIELD_TYPENAMECN.getRegexp(), StringUtil.isBlank(archives.get("categoryCnName")) ? "" : archives.get("categoryCnName").toString());
 		item = item.replaceAll(FieldEnum.FIELD_TYPENAMEEN.getRegexp(), StringUtil.isBlank(archives.get("categoryEnName")) ? "-1" : archives.get("categoryEnName").toString());
