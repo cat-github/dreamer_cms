@@ -36,6 +36,7 @@ public enum FieldEnum {
 	FIELD_TITLE("title","(\\[field:title[ \\t]*(function=\\\"((.*)\\((.*?)\\)?)\\\"){0,1}[ \\t]*?/\\])"),
 	FIELD_PROPERTIES("properties","(\\[field:properties[ \\t]*.*?/\\])"),
 	FIELD_LITPIC("litpic","(\\[field:litpic[ \\t]*.*?/\\])"),
+	FIELD_HASTHUMBNAIL("hasthumbnail","(\\[field:hasthumbnail[ \\t]*.*?/\\])"),
 	FIELD_TAG("tag","(\\[field:tag[ \\t]*.*?/\\])"),
 	FIELD_REMARK("remark","(\\[field:remark[ \\t]*.*?/\\])"),
 	FIELD_CATEGORYID("categoryid","(\\[field:categoryid[ \\t]*.*?/\\])"),
