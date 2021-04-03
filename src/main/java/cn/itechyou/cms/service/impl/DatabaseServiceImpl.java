@@ -1,20 +1,19 @@
-package cn.itechyou.cms.task.tasks;
+package cn.itechyou.cms.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import cn.itechyou.cms.dao.DatabaseMapper;
 import cn.itechyou.cms.dao.SystemMapper;
-import cn.itechyou.cms.task.ScheduledOfTask;
+import cn.itechyou.cms.service.DatabaseService;
 import cn.itechyou.cms.thread.BackupThread;
 import cn.itechyou.cms.utils.FileConfiguration;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@Component
-public class DataBaseBackupTask implements ScheduledOfTask {
+@Service
+public class DatabaseServiceImpl implements DatabaseService {
 	@Autowired
 	private FileConfiguration fileConfiguration;
 	@Autowired
@@ -23,20 +22,27 @@ public class DataBaseBackupTask implements ScheduledOfTask {
 	private DatabaseMapper databaseMapper;
 
 	@Override
-	public void execute() {
+	public List<String> showTables() {
+		return databaseMapper.showTables();
+	}
+
+	@Override
+	public int backup(String tableName) {
 		BackupThread backupThread = new BackupThread();
 		backupThread.setFileConfiguration(fileConfiguration);
 		backupThread.setSystemMapper(systemMapper);
 		backupThread.setDatabaseMapper(databaseMapper);
-		
-		List<String> tables = databaseMapper.showTables();
-		
-		String[] tableArr = new String[tables.size()];
-		tables.toArray(tableArr);
-		
-		backupThread.setTableNames(tableArr);
+		backupThread.setTableNames(new String[] {tableName});
 		Thread t = new Thread(backupThread);
 		t.start();
+		return 1;
 	}
 
+	@Override
+	public String showStruct(String tableName) {
+		Map<String, String> struct = databaseMapper.showTableStruct(tableName);
+		return struct.get("Create Table");
+	}
+	
+	
 }
