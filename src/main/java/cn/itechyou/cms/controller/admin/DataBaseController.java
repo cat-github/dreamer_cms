@@ -1,8 +1,9 @@
 package cn.itechyou.cms.controller.admin;
 
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,7 @@ public class DataBaseController {
 	 * 列表
 	 */
 	@RequestMapping({"","/showTables"})
-	@RequiresPermissions("5mqvsn91")
+	//@RequiresPermissions("5mqvsn91")
 	public String list(Model model) {
 		List<String> tables = databaseService.showTables();
 		model.addAttribute("tables", tables);
@@ -36,7 +37,7 @@ public class DataBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/backup", method = RequestMethod.GET)
-	@RequiresPermissions("6g6w462l")
+	//@RequiresPermissions("6g6w462l")
 	public ResponseResult backup(Model model, String tableName) {
 		int i = databaseService.backup(tableName);
 		return ResponseResult.Factory.newInstance(Boolean.TRUE, StateCodeEnum.HTTP_SUCCESS.getCode(), null, StateCodeEnum.HTTP_SUCCESS.getDescription());
@@ -47,15 +48,26 @@ public class DataBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/showStruct", method = RequestMethod.GET)
-	@RequiresPermissions("6g6w462l")
+	//@RequiresPermissions("6g6w462l")
 	public ResponseResult showStruct(Model model, String tableName) {
 		String struct = databaseService.showStruct(tableName);
 		return ResponseResult.Factory.newInstance(Boolean.TRUE, StateCodeEnum.HTTP_SUCCESS.getCode(), struct, StateCodeEnum.HTTP_SUCCESS.getDescription());
 	}
 
-	@RequestMapping({"/restore"})
-	@RequiresPermissions("5mqvsn91")
-	public String restore(Model model) {
+	@RequestMapping({"/toRestore"})
+	//@RequiresPermissions("5mqvsn91")
+	public String toRestore(Model model) throws SQLException, FileNotFoundException {
 		return "admin/database/restore";
+	}
+	
+	/**
+	 * 还原
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/restore", method = RequestMethod.GET)
+	//@RequiresPermissions("6g6w462l")
+	public ResponseResult restore(Model model, String fileNames) {
+		int i = databaseService.restore(fileNames);
+		return ResponseResult.Factory.newInstance(Boolean.TRUE, StateCodeEnum.HTTP_SUCCESS.getCode(), null, StateCodeEnum.HTTP_SUCCESS.getDescription());
 	}
 }

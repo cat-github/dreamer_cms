@@ -10,4 +10,6 @@ public interface DatabaseService {
 
 	String showStruct(String tableName);
 
+	int restore(String fileNames);
+
 }
