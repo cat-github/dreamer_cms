@@ -50,11 +50,12 @@ public class DatabaseServiceImpl implements DatabaseService {
 	}
 
 	@Override
-	public int restore(String fileNames) {
+	public int restore(String[] fileNames) {
 		RestoreThread restoreThread = new RestoreThread();
+		restoreThread.setFileConfiguration(fileConfiguration);
+		restoreThread.setSystemMapper(systemMapper);
 		restoreThread.setDataSource(dataSource);
-		String[] files = fileNames.split(",");
-		restoreThread.setFiles(files);
+		restoreThread.setFiles(fileNames);
 		Thread t = new Thread(restoreThread);
 		t.start();
 		return 1;

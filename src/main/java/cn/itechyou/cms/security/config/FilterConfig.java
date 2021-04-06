@@ -30,7 +30,7 @@ public class FilterConfig {
         registration.setOrder(Integer.MAX_VALUE);
         //设置初始化参数
         Map<String, String> initParameters = new HashMap<String, String>();
-        initParameters.put("excludes", "/admin/u/*");
+        initParameters.put("excludes", "/admin/*");
         initParameters.put("enabled", "true");
         registration.setInitParameters(initParameters);
         return registration;

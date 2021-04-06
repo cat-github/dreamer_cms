@@ -8,6 +8,9 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
+import cn.itechyou.cms.dao.SystemMapper;
+import cn.itechyou.cms.entity.System;
+import cn.itechyou.cms.utils.FileConfiguration;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,10 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class RestoreThread implements Runnable {
 	private DataSource dataSource;
+	private FileConfiguration fileConfiguration;
+	private SystemMapper systemMapper;
 	private String[] files;
 	
 	@Override
 	public void run() {
+		System system = systemMapper.getCurrentSystem();
+		String resourceDir = fileConfiguration.getResourceDir();
+		
 		log.info("准备执行数据库还原操作...");
 		Connection connection;
 		try {
@@ -29,6 +37,9 @@ public class RestoreThread implements Runnable {
 			//循环执行数据库还原操作
 			for(int i = 0;i < files.length;i++) {
 				String filePath = files[i];
+				
+				filePath = resourceDir + system.getUploaddir() + filePath;
+				java.lang.System.out.println(filePath);
 				runner.runScript(new FileReader(new File(filePath)));
 			}
 		} catch (Exception e) {
@@ -36,6 +47,7 @@ public class RestoreThread implements Runnable {
 			log.info("执行数据库还原操作失败...");
 			log.error(e.getMessage());
 		}
+		log.info("执行数据库还原操作成功...");
 	}
 
 }
